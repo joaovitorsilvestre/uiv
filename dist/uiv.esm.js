@@ -2815,7 +2815,6 @@ var Popover = {
       default: ''
     },
     content: {
-      type: String,
       default: ''
     },
     trigger: {
@@ -4081,8 +4080,8 @@ var bind$2 = function bind(el, binding) {
     propsData: {
       target: el,
       appendTo: binding.arg && '#' + binding.arg,
-      title: binding.value && binding.value.title && binding.value.title.toString(),
-      content: binding.value && binding.value.content && binding.value.content.toString()
+      title: binding.value && binding.value.title,
+      content: binding.value && binding.value.content
     }
   });
   var options = [];
