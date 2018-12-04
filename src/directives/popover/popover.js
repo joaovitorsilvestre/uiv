@@ -12,7 +12,8 @@ const bind = (el, binding) => {
       target: el,
       appendTo: binding.arg && '#' + binding.arg,
       title: binding.value && binding.value.title && binding.value.title.toString(),
-      content: binding.value && binding.value.content && binding.value.content.toString()
+      content: binding.value && binding.value.content && binding.value.content.toString(),
+      html: binding.arg === 'html'
     }
   })
   let options = []
