@@ -10,6 +10,8 @@
       }
     },
     render (h) {
+      const domProps = this.html ? {innerHTML: this.content} : {}
+
       return h(this.tag,
         [
           this.$slots.default,
@@ -33,9 +35,7 @@
               }, this.title),
               h('div', {
                 'class': 'popover-content',
-                domProps: {
-                  innerHTML: this.content
-                }
+                domProps
               }, [this.content || this.$slots.popover])
             ]
           )
@@ -54,6 +54,10 @@
       trigger: {
         type: String,
         default: TRIGGERS.OUTSIDE_CLICK
+      },
+      html: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {

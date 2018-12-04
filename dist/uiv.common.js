@@ -2721,6 +2721,8 @@ var Popover = {
     };
   },
   render: function render(h) {
+    var domProps = this.html ? { innerHTML: this.content } : {};
+
     return h(this.tag, [this.$slots.default, h('div', {
       style: {
         display: 'block'
@@ -2734,9 +2736,7 @@ var Popover = {
       directives: [{ name: 'show', value: this.title }]
     }, this.title), h('div', {
       'class': 'popover-content',
-      domProps: {
-        innerHTML: this.content
-      }
+      domProps: domProps
     }, [this.content || this.$slots.popover])])]);
   },
 
@@ -2752,6 +2752,10 @@ var Popover = {
     trigger: {
       type: String,
       default: TRIGGERS.OUTSIDE_CLICK
+    },
+    html: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -4009,7 +4013,8 @@ var bind$2 = function bind(el, binding) {
       target: el,
       appendTo: binding.arg && '#' + binding.arg,
       title: binding.value && binding.value.title && binding.value.title.toString(),
-      content: binding.value && binding.value.content && binding.value.content.toString()
+      content: binding.value && binding.value.content && binding.value.content.toString(),
+      html: binding.arg === 'html'
     }
   });
   var options = [];
