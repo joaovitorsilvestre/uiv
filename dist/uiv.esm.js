@@ -2728,10 +2728,9 @@ var Popover = {
       directives: [{ name: 'show', value: this.title }]
     }, this.title), h('div', {
       'class': 'popover-content',
-      'directives': [{
-        name: 'html',
-        value: this.content
-      }]
+      domProps: {
+        innerHTML: this.content
+      }
     }, [this.content || this.$slots.popover])])]);
   },
 
