@@ -2726,7 +2726,13 @@ var Popover = {
     }, [h('div', { 'class': 'arrow' }), h('h3', {
       'class': 'popover-title',
       directives: [{ name: 'show', value: this.title }]
-    }, this.title), h('div', { 'class': 'popover-content', 'v-html': this.content }, [this.content || this.$slots.popover])])]);
+    }, this.title), h('div', {
+      'class': 'popover-content',
+      'directives': [{
+        name: 'v-html',
+        value: this.content
+      }]
+    }, [this.content || this.$slots.popover])])]);
   },
 
   props: {
