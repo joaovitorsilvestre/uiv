@@ -35,7 +35,7 @@
               }, this.title),
               h('div', {
                 'class': 'popover-content',
-                domProps
+                ...domProps
               }, [this.content || this.$slots.popover])
             ]
           )
