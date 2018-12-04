@@ -34,7 +34,7 @@
               h('div', {
                 'class': 'popover-content',
                 'directives': [{
-                  name: 'v-html',
+                  name: 'html',
                   value: this.content
                 }]
               }, [this.content || this.$slots.popover])
