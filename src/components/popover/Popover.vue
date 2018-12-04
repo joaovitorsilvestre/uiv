@@ -9,7 +9,15 @@
         name: 'popover'
       }
     },
-    render (h) {
+    async render (h) {
+      function isPromise (value) {
+        return value && Object.prototype.toString.call(value) === '[object Promise]'
+      }
+
+      let content = this.content
+      if (isPromise(content)) {
+        content = await content
+      }
       return h(this.tag,
         [
           this.$slots.default,
@@ -34,9 +42,9 @@
               h('div', {
                 'class': 'popover-content',
                 domProps: {
-                  innerHTML: this.content
+                  innerHTML: content
                 }
-              }, [this.content || this.$slots.popover])
+              }, [content || this.$slots.popover])
             ]
           )
         ]

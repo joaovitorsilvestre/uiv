@@ -902,6 +902,43 @@ var i18n = function i18n(fn) {
 
 var locale = { use: use, t: t, i18n: i18n };
 
+var asyncToGenerator = function (fn) {
+  return function () {
+    var gen = fn.apply(this, arguments);
+    return new Promise(function (resolve, reject) {
+      function step(key, arg) {
+        try {
+          var info = gen[key](arg);
+          var value = info.value;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
+        if (info.done) {
+          resolve(value);
+        } else {
+          return Promise.resolve(value).then(function (value) {
+            step("next", value);
+          }, function (err) {
+            step("throw", err);
+          });
+        }
+      }
+
+      return step("next");
+    });
+  };
+};
+
+
+
+
+
+
+
+
+
 var defineProperty = function (obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -2715,23 +2752,57 @@ var Popover = {
     };
   },
   render: function render(h) {
-    return h(this.tag, [this.$slots.default, h('div', {
-      style: {
-        display: 'block'
-      },
-      ref: 'popup',
-      on: {
-        mouseleave: this.hideOnLeave
-      }
-    }, [h('div', { 'class': 'arrow' }), h('h3', {
-      'class': 'popover-title',
-      directives: [{ name: 'show', value: this.title }]
-    }, this.title), h('div', {
-      'class': 'popover-content',
-      domProps: {
-        innerHTML: this.content
-      }
-    }, [this.content || this.$slots.popover])])]);
+    var _this = this;
+
+    return asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var isPromise, content;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              isPromise = function isPromise(value) {
+                return value && Object.prototype.toString.call(value) === '[object Promise]';
+              };
+
+              content = _this.content;
+
+              if (!isPromise(content)) {
+                _context.next = 6;
+                break;
+              }
+
+              _context.next = 5;
+              return content;
+
+            case 5:
+              content = _context.sent;
+
+            case 6:
+              return _context.abrupt('return', h(_this.tag, [_this.$slots.default, h('div', {
+                style: {
+                  display: 'block'
+                },
+                ref: 'popup',
+                on: {
+                  mouseleave: _this.hideOnLeave
+                }
+              }, [h('div', { 'class': 'arrow' }), h('h3', {
+                'class': 'popover-title',
+                directives: [{ name: 'show', value: _this.title }]
+              }, _this.title), h('div', {
+                'class': 'popover-content',
+                domProps: {
+                  innerHTML: content
+                }
+              }, [content || _this.$slots.popover])])]));
+
+            case 7:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, _this);
+    }))();
   },
 
   props: {
