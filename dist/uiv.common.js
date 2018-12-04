@@ -908,6 +908,43 @@ var i18n = function i18n(fn) {
 
 var locale = { use: use, t: t, i18n: i18n };
 
+var asyncToGenerator = function (fn) {
+  return function () {
+    var gen = fn.apply(this, arguments);
+    return new Promise(function (resolve, reject) {
+      function step(key, arg) {
+        try {
+          var info = gen[key](arg);
+          var value = info.value;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
+        if (info.done) {
+          resolve(value);
+        } else {
+          return Promise.resolve(value).then(function (value) {
+            step("next", value);
+          }, function (err) {
+            step("throw", err);
+          });
+        }
+      }
+
+      return step("next");
+    });
+  };
+};
+
+
+
+
+
+
+
+
+
 var defineProperty = function (obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -2721,23 +2758,61 @@ var Popover = {
     };
   },
   render: function render(h) {
-    var domProps = this.html === true ? { innerHTML: this.content } : {};
+    var _this = this;
 
-    return h(this.tag, [this.$slots.default, h('div', {
-      style: {
-        display: 'block'
-      },
-      ref: 'popup',
-      on: {
-        mouseleave: this.hideOnLeave
-      }
-    }, [h('div', { 'class': 'arrow' }), h('h3', {
-      'class': 'popover-title',
-      directives: [{ name: 'show', value: this.title }]
-    }, this.title), h('div', {
-      'class': 'popover-content',
-      domProps: domProps
-    }, [this.content || this.$slots.popover])])]);
+    return asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var isFunction, content, domProps;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              isFunction = function isFunction(functionToCheck) {
+                return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+              };
+
+              content = void 0;
+
+              if (!isFunction(_this.content)) {
+                _context.next = 8;
+                break;
+              }
+
+              _context.next = 5;
+              return _this.content;
+
+            case 5:
+              content = _context.sent;
+              _context.next = 9;
+              break;
+
+            case 8:
+              content = _this.content;
+
+            case 9:
+              domProps = _this.html === true ? { innerHTML: content } : {};
+              return _context.abrupt('return', h(_this.tag, [_this.$slots.default, h('div', {
+                style: {
+                  display: 'block'
+                },
+                ref: 'popup',
+                on: {
+                  mouseleave: _this.hideOnLeave
+                }
+              }, [h('div', { 'class': 'arrow' }), h('h3', {
+                'class': 'popover-title',
+                directives: [{ name: 'show', value: _this.title }]
+              }, _this.title), h('div', {
+                'class': 'popover-content',
+                domProps: domProps
+              }, [content || _this.$slots.popover])])]));
+
+            case 11:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, _this);
+    }))();
   },
 
   props: {

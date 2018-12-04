@@ -9,8 +9,19 @@
         name: 'popover'
       }
     },
-    render (h) {
-      const domProps = this.html === true ? {innerHTML: this.content} : {}
+    async render (h) {
+      function isFunction(functionToCheck) {
+        return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+      }
+
+      let content
+      if (isFunction(this.content)) {
+        content = await this.content
+      } else {
+        content = this.content
+      }
+
+      const domProps = this.html === true ? {innerHTML: content} : {}
 
       return h(this.tag,
         [
@@ -36,7 +47,7 @@
               h('div', {
                 'class': 'popover-content',
                 domProps
-              }, [this.content || this.$slots.popover])
+              }, [content || this.$slots.popover])
             ]
           )
         ]
