@@ -2764,25 +2764,27 @@ var Popover = {
                 return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
               };
 
+              console.log('componentttttt');
+
               content = void 0;
 
               if (!isFunction(_this.content)) {
-                _context.next = 8;
+                _context.next = 9;
                 break;
               }
 
-              _context.next = 5;
+              _context.next = 6;
               return _this.content;
 
-            case 5:
+            case 6:
               content = _context.sent;
-              _context.next = 9;
+              _context.next = 10;
               break;
 
-            case 8:
+            case 9:
               content = _this.content;
 
-            case 9:
+            case 10:
               domProps = _this.html === true ? { innerHTML: content } : {};
               return _context.abrupt('return', h(_this.tag, [_this.$slots.default, h('div', {
                 style: {
@@ -2800,7 +2802,7 @@ var Popover = {
                 domProps: domProps
               }, [content || _this.$slots.popover])])]));
 
-            case 11:
+            case 12:
             case 'end':
               return _context.stop();
           }
@@ -4076,11 +4078,12 @@ var bind$2 = function bind(el, binding) {
   // console.log('bind')
   unbind$2(el);
   var Constructor = Vue.extend(Popover);
+  console.log('diretivaaaaaaaaaaaa', binding);
   var vm = new Constructor({
     propsData: {
       target: el,
       appendTo: binding.arg && '#' + binding.arg,
-      title: binding.value && binding.value.title,
+      title: binding.value && binding.value.title && binding.value.title.toString(),
       content: binding.value && binding.value.content
     }
   });
