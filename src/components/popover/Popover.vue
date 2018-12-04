@@ -10,7 +10,7 @@
       }
     },
     render (h) {
-      const domProps = this.html ? {innerHTML: this.content} : {}
+      const domProps = this.html === true ? {innerHTML: this.content} : {}
 
       return h(this.tag,
         [
@@ -35,7 +35,7 @@
               }, this.title),
               h('div', {
                 'class': 'popover-content',
-                ...domProps
+                domProps
               }, [this.content || this.$slots.popover])
             ]
           )

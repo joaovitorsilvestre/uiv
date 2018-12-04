@@ -2715,7 +2715,7 @@ var Popover = {
     };
   },
   render: function render(h) {
-    var domProps = this.html ? { innerHTML: this.content } : {};
+    var domProps = this.html === true ? { innerHTML: this.content } : {};
 
     return h(this.tag, [this.$slots.default, h('div', {
       style: {
@@ -2728,9 +2728,10 @@ var Popover = {
     }, [h('div', { 'class': 'arrow' }), h('h3', {
       'class': 'popover-title',
       directives: [{ name: 'show', value: this.title }]
-    }, this.title), h('div', _extends({
-      'class': 'popover-content'
-    }, domProps), [this.content || this.$slots.popover])])]);
+    }, this.title), h('div', {
+      'class': 'popover-content',
+      domProps: domProps
+    }, [this.content || this.$slots.popover])])]);
   },
 
   props: {
@@ -4006,8 +4007,7 @@ var bind$2 = function bind(el, binding) {
       target: el,
       appendTo: binding.arg && '#' + binding.arg,
       title: binding.value && binding.value.title && binding.value.title.toString(),
-      content: binding.value && binding.value.content && binding.value.content.toString(),
-      html: binding.arg === 'html'
+      content: binding.value && binding.value.content && binding.value.content.toString()
     }
   });
   var options = [];
@@ -4017,7 +4017,9 @@ var bind$2 = function bind(el, binding) {
     }
   }
   options.forEach(function (option) {
-    if (/(top)|(left)|(right)|(bottom)/.test(option)) {
+    if (/html/.test(option)) {
+      vm.html = true;
+    } else if (/(top)|(left)|(right)|(bottom)/.test(option)) {
       vm.placement = option;
     } else if (/(hover)|(focus)|(click)/.test(option)) {
       vm.trigger = option;

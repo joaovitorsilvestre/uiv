@@ -12,8 +12,7 @@ const bind = (el, binding) => {
       target: el,
       appendTo: binding.arg && '#' + binding.arg,
       title: binding.value && binding.value.title && binding.value.title.toString(),
-      content: binding.value && binding.value.content && binding.value.content.toString(),
-      html: binding.arg === 'html'
+      content: binding.value && binding.value.content && binding.value.content.toString()
     }
   })
   let options = []
@@ -23,7 +22,9 @@ const bind = (el, binding) => {
     }
   }
   options.forEach(option => {
-    if (/(top)|(left)|(right)|(bottom)/.test(option)) {
+    if (/html/.test(option)) {
+      vm.html = true
+    } else if (/(top)|(left)|(right)|(bottom)/.test(option)) {
       vm.placement = option
     } else if (/(hover)|(focus)|(click)/.test(option)) {
       vm.trigger = option
