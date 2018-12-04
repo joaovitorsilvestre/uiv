@@ -31,7 +31,13 @@
                   {name: 'show', value: this.title}
                 ]
               }, this.title),
-              h('template', {'class': 'popover-content'}, [this.content || this.$slots.popover])
+              h('div', {
+                'class': 'popover-content',
+                'directives': [{
+                  name: 'v-html',
+                  value: this.content
+                }]
+              }, [this.content || this.$slots.popover])
             ]
           )
         ]
